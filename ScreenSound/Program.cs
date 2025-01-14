@@ -4,18 +4,22 @@ using ScreenSound.Modelos;
 
 try
 {
-    var artistaDal = new ArtistaDAL();
-    artistaDal.Deletar(5);
+    var context = new ScreenSoundContext();
+    var artistaDal = new ArtistaDAL(context);
+    // artistaDal.Deletar(5);
+    // artistaDal.Adicionar(new Artista("Gilberto Gil", "show de pelota"));
+    // artistaDal.Atualizar(new Artista("Zeca baleiro", "eu tava triste, tristinho"){ Id=2 });
+    artistaDal.Deletar(new Artista("Zeca baleiro", "eu tava triste, tristinho"){ Id=7 });
     var lista = artistaDal.Listar();
     foreach(Artista artista in lista) {
-        Console.WriteLine($"{artista.Id} - {artista.Nome}");
+        Console.WriteLine($"{artista}");
     }    
 }
 catch (Exception ex)
 {
     Console.WriteLine(ex.Message);
 }
-
+return;
 Artista ira = new Artista("Ira!", "Banda Ira!");
 Artista beatles = new("The Beatles", "Banda The Beatles");
 

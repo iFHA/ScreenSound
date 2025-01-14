@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dotnet-app
+    ports:
+      - "8080:80"
+    networks:
+      - dotnet-network
+    # environment:
+      # - ASPNETCORE_ENVIRONMENT=Production
+  
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      MSSQL_SA_PASSWORD: "Dbzbt333@"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    networks:
+      - dotnet-network
+  mssqltools:
+    image: mcr.microsoft.com/mssql-tools
+    container_name: mssqltools
+    depends_on:
+      - sqlserver
+    networks:
+      - dotnet-network
+    entrypoint: /bin/bash
+    stdin_open: true
+    tty: true
+networks:
+  dotnet-network:
+    driver: bridge

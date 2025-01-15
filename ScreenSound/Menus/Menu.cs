@@ -3,7 +3,7 @@ using ScreenSound.Modelos;
 
 namespace ScreenSound.Menus;
 
-internal class Menu
+public class Menu
 {
     public void ExibirTituloDaOpcao(string titulo)
     {
@@ -13,7 +13,7 @@ internal class Menu
         Console.WriteLine(titulo);
         Console.WriteLine(asteriscos + "\n");
     }
-    public virtual void Executar(ArtistaDAL artistaDAL)
+    public virtual void Executar(DAL<Artista> artistaDAL)
     {
         Console.Clear();
     }

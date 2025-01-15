@@ -29,5 +29,8 @@ public class ArtistaDAL
         context.Artistas.Remove(artista);
         context.SaveChanges();
     }
+    public Artista findByNome(string nome) {
+        return Listar().FirstOrDefault(artista => artista.Nome.Equals(nome));
+    }
 
 }

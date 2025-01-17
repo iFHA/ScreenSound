@@ -11,7 +11,9 @@ namespace ScreenSound.Banco
         private string ConnectionString = "Data Source=localhost;Initial Catalog=ScreenSound;User ID=sa;Password=Dbzbt333@;TrustServerCertificate=True";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(ConnectionString);
+            optionsBuilder
+            .UseSqlServer(ConnectionString)
+            .UseLazyLoadingProxies();
         }        
     }
 }

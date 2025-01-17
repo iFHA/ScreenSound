@@ -13,5 +13,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.1"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.1"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.1"/>
   </ItemGroup>
 </Project>

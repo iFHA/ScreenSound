@@ -7,7 +7,7 @@ public class Artista
     public string Bio { get; set; }
     public string FotoPerfil { get; set; }
     public virtual ICollection<Musica> Musicas { get; set; } = new List<Musica>();
-
+    public Artista() { Nome = ""; Bio = ""; FotoPerfil = ""; }
     public Artista(string nome, string bio)
     {
         Nome = nome;

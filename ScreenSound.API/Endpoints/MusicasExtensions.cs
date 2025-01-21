@@ -29,7 +29,7 @@ public static class MusicasExtensions
 
         });
 
-        app.MapGet("/Musicas/{Nome}", (string Nome, DAL<Musica> dal) =>
+        app.MapGet("/Musicas/PorNome/{Nome}", (string Nome, DAL<Musica> dal) =>
         {
             var result = dal.RecuperarPor(musica => musica.Nome.Equals(Nome));
             if (result is null)
@@ -41,14 +41,14 @@ public static class MusicasExtensions
 
         });
 
-        app.MapPost("/Musicas", ([FromBody] MusicaRequest musicaRequest, DAL<Musica> dal) =>
+        app.MapPost("/Musicas", ([FromBody] MusicaRequest musicaRequest, DAL<Musica> dal, DAL<Genero> dalGenero) =>
         {
             var musica = new Musica(musicaRequest.Nome)
             {
                 ArtistaId = musicaRequest.ArtistaId,
                 AnoLancamento = musicaRequest.AnoLancamento,
                 Generos = musicaRequest.Generos is not null ?
-                GeneroRequestConverter(musicaRequest.Generos)
+                GeneroRequestConverter(musicaRequest.Generos, dalGenero)
                 : new List<Genero>()
             };
             dal.Adicionar(musica);
@@ -79,13 +79,18 @@ public static class MusicasExtensions
         });
     }
 
-    private static ICollection<Genero> GeneroRequestConverter(ICollection<GeneroRequest> generos)
+    private static ICollection<Genero> GeneroRequestConverter(ICollection<GeneroRequest> generos, DAL<Genero> dalGenero)
     {
-        return generos.Select(generoRequest => RequestToEntity(generoRequest)).ToList();
+        return generos.Select(generoRequest => RequestToEntity(generoRequest, dalGenero)).ToList();
     }
 
-    private static Genero RequestToEntity(GeneroRequest generoRequest)
+    private static Genero RequestToEntity(GeneroRequest generoRequest, DAL<Genero> dalGenero)
     {
+        var generoBD = dalGenero.RecuperarPor(g => g.Nome.ToLower().Equals(generoRequest.Nome.ToLower()));
+        if (generoBD is not null)
+        {
+            return generoBD;
+        }
         return new Genero()
         {
             Nome = generoRequest.Nome,

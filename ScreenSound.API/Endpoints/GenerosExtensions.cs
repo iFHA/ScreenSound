@@ -17,9 +17,9 @@ public static class GenerosExtensions
             return Results.Ok(dal.Listar());
         });
 
-        app.MapGet("/Generos/{Id}", (int Id, DAL<Genero> dal) =>
+        app.MapGet("/Generos/PorNome/{Nome}", (string Nome, DAL<Genero> dal) =>
         {
-            var result = dal.RecuperarPor(genero => genero.Id.Equals(Id));
+            var result = dal.RecuperarPor(genero => genero.Nome.ToLower().Contains(Nome.ToLower()));
             if (result is null)
             {
                 return Results.NotFound();
@@ -29,9 +29,9 @@ public static class GenerosExtensions
 
         });
 
-        app.MapGet("/Generos/{Nome}", (string Nome, DAL<Genero> dal) =>
+        app.MapGet("/Generos/{Id}", (int Id, DAL<Genero> dal) =>
         {
-            var result = dal.RecuperarPor(genero => genero.Nome.Equals(Nome));
+            var result = dal.RecuperarPor(genero => genero.Id.Equals(Id));
             if (result is null)
             {
                 return Results.NotFound();

@@ -11,6 +11,7 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =
 builder.Services.AddDbContext<ScreenSoundContext>();
 builder.Services.AddTransient<DAL<Artista>>();
 builder.Services.AddTransient<DAL<Musica>>();
+builder.Services.AddTransient<DAL<Genero>>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -19,6 +20,7 @@ var app = builder.Build();
 
 app.AddEndpointsArtistas();
 app.AddEndpointsMusicas();
+app.AddEndpointsGeneros();
 
 app.UseSwagger();
 app.UseSwaggerUI();

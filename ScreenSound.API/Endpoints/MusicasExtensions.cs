@@ -29,6 +29,18 @@ public static class MusicasExtensions
 
         });
 
+        app.MapGet("/Musicas/{Nome}", (string Nome, DAL<Musica> dal) =>
+        {
+            var result = dal.RecuperarPor(musica => musica.Nome.Equals(Nome));
+            if (result is null)
+            {
+                return Results.NotFound();
+            }
+
+            return Results.Ok(result);
+
+        });
+
         app.MapPost("/Musicas", ([FromBody] MusicaRequest musicaRequest, DAL<Musica> dal) =>
         {
             var musica = new Musica(musicaRequest.Nome)

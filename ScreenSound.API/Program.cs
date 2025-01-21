@@ -16,6 +16,16 @@ builder.Services.AddTransient<DAL<Genero>>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("cors-policy",
+        builder =>
+        {
+            builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()
+                .SetIsOriginAllowedToAllowWildcardSubdomains();
+        });
+});
+
 var app = builder.Build();
 
 app.AddEndpointsArtistas();
@@ -24,5 +34,6 @@ app.AddEndpointsGeneros();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+app.UseCors("cors-policy");
 
 app.Run();

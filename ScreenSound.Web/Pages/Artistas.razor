@@ -1,0 +1,34 @@
+﻿@page "/Artistas"
+@inject ArtistaAPI artistaAPI
+
+<h3>Artistas</h3>
+
+@if (artistas is not null)
+{
+    foreach (var artista in artistas)
+    {
+        <p>@artista.Nome</p>
+    }
+}
+@if (ErrorMessage is not null)
+{
+    <p>@ErrorMessage</p>
+}
+
+
+@code {
+    private ICollection<ArtistaResponse>? artistas;
+    private string? ErrorMessage = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            artistas = await artistaAPI.GetArtistasAsync();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+    }
+}

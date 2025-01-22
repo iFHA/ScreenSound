@@ -1,0 +1,37 @@
+﻿@page "/CadastrarArtista"
+@inject ArtistaAPI artistaAPI
+@inject NavigationManager navigationManager
+
+<MudPaper Class="px-8 pt-2 pb-4 mx-12 my-8" Justify="Justify.Center">
+
+    <MudText Class="mt-8" Typo="Typo.h4">Cadastro do Artista</MudText>
+
+    <MudForm>
+
+        <MudTextField Class="mt-4" T="string" Placeholder="Nome do Artista" Variant="Variant.Outlined" @ref="nome"
+            Required="true" RequiredError="Campo obrigatório." />
+
+        <MudTextField Class="mt-4" T="string" Placeholder="Biografia do artista" Variant="Variant.Outlined"
+            @ref="biografia" Lines="4" Required="true" RequiredError="Campo obrigatório." />
+
+        <div class="d-flex align-center justify-space-between mt-4">
+            <MudButton Variant="Variant.Filled" @onclick="Cadastrar" Color="Color.Primary" Class="ml-auto">
+                Cadastrar
+            </MudButton>
+        </div>
+
+    </MudForm>
+</MudPaper>
+
+@code {
+    private MudTextField<string>? nome;
+    private MudTextField<string>? biografia;
+
+    private async Task Cadastrar()
+    {
+        var request = new ArtistaRequest(nome?.Value!, biografia?.Value!);
+        await artistaAPI.AddArtistaAsync(request);
+        navigationManager.NavigateTo("/Artistas");
+    }
+
+}

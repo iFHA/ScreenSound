@@ -4,8 +4,10 @@
 
 <MudPaper Class="px-8 pt-2 pb-4 mx-12 my-8" Justify="Justify.Center">
 
-    <MudText Class="mt-8" Typo="Typo.h4">Cadastro do Artista</MudText>
-
+    <div class="d-flex align-center justify-space-between mt-4">
+        <MudText Class="mt-8 d-inline-block" Typo="Typo.h4">Cadastro do Artista</MudText>
+        <MudButton Variant="Variant.Filled" @onclick="Voltar">Voltar</MudButton>
+    </div>
     <MudForm>
 
         <MudTextField Class="mt-4" T="string" Placeholder="Nome do Artista" Variant="Variant.Outlined" @ref="nome"
@@ -31,6 +33,11 @@
     {
         var request = new ArtistaRequest(nome?.Value!, biografia?.Value!);
         await artistaAPI.AddArtistaAsync(request);
+        Voltar();
+    }
+
+    private void Voltar()
+    {
         navigationManager.NavigateTo("/Artistas");
     }
 

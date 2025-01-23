@@ -39,19 +39,17 @@ public static class ArtistasExtensions
             return Results.Created();
         });
 
-        app.MapPut("/Artistas/{Id}", (int Id, [FromBody] Artista artista, DAL<Artista> dal) =>
+        app.MapPut("/Artistas", ([FromBody] Artista artista, DAL<Artista> dal) =>
         {
-            var artistaDb = dal.RecuperarPor(artista => artista.Id.Equals(Id));
-            if (artistaDb is null)
+            if (artista is null)
             {
                 return Results.NotFound();
             }
-            artista.Id = artistaDb.Id;
             dal.Atualizar(artista);
             return Results.Ok(artista);
         });
 
-        app.MapDelete("/Artistas/{Id}", (int Id, DAL<Artista> dal) =>
+        app.MapDelete("/Artistas/{Id:int}", (int Id, DAL<Artista> dal) =>
         {
             var artista = dal.RecuperarPor(artista => artista.Id.Equals(Id));
             if (artista is null)

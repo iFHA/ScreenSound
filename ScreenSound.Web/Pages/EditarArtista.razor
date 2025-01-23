@@ -1,0 +1,60 @@
+﻿@page "/EditarArtista/{NomeArtista}"
+@inject ArtistaAPI artistaAPI
+@inject NavigationManager navigationManager
+
+<MudPaper Class="px-8 pt-2 pb-4 mx-12 my-8" Justify="Justify.Center">
+
+    <div class="d-flex align-center justify-space-between mt-4">
+        <MudText Class="mt-8 d-inline-block" Typo="Typo.h4">Edição do Artista</MudText>
+        <MudButton Variant="Variant.Filled" @onclick="Voltar">Voltar</MudButton>
+    </div>
+    <MudForm>
+
+        <MudTextField Class="mt-4" T="string" Placeholder="Nome do Artista" Variant="Variant.Outlined" @ref="nome"
+            Required="true" RequiredError="Campo obrigatório." />
+
+        <MudTextField Class="mt-4" T="string" Placeholder="Biografia do artista" Variant="Variant.Outlined"
+            @ref="biografia" Lines="4" Required="true" RequiredError="Campo obrigatório." />
+
+        <div class="d-flex align-center mt-4">
+            <MudButton Variant="Variant.Filled" @onclick="Atualizar" Color="Color.Primary" Class="ml-auto">
+                Salvar
+            </MudButton>
+            <MudButton Variant="Variant.Filled" @onclick="Deletar" Color="Color.Secondary" Class="ml-2">
+                Deletar
+            </MudButton>
+        </div>
+
+    </MudForm>
+</MudPaper>
+
+@code {
+    [Parameter]
+    public string NomeArtista { get; set; }
+    public ArtistaResponse? Artista { get; set; }
+    private MudTextField<string>? nome;
+    private MudTextField<string>? biografia;
+
+    private async Task Deletar()
+    {
+        await artistaAPI.DeleteArtistaAsync(Artista.Id);
+        Voltar();
+    }
+
+    private void Voltar()
+    {
+        navigationManager.NavigateTo("/Artistas");
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        Artista = await artistaAPI.GetArtistaFromNameAsync(NomeArtista);
+        nome.SetText(NomeArtista);
+        biografia.SetText(Artista.Bio);
+    }
+    private async Task Atualizar()
+    {
+        var request = new ArtistaRequestEdit(Artista!.Id, nome?.Value!, biografia?.Value!);
+        await artistaAPI.UpdateArtistaAsync(request);
+        Voltar();
+    }
+}

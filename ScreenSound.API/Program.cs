@@ -35,5 +35,6 @@ app.AddEndpointsGeneros();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors("cors-policy");
+app.UseStaticFiles();
 
 app.Run();

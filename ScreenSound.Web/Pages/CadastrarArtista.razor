@@ -16,6 +16,15 @@
         <MudTextField Class="mt-4" T="string" Placeholder="Biografia do artista" Variant="Variant.Outlined"
             @ref="biografia" Lines="4" Required="true" RequiredError="Campo obrigatório." />
 
+        <MudImage Width="200" Class="my-4" src="@fileImage" />
+        <MudFileUpload T="IBrowserFile" Accept=".jpeg" FilesChanged="UploadFile">
+            <ActivatorContent>
+                <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary"
+                    StartIcon="@Icons.Material.Filled.PhotoCamera">
+                    Foto de Perfil
+                </MudButton>
+            </ActivatorContent>
+        </MudFileUpload>
         <div class="d-flex align-center justify-space-between mt-4">
             <MudButton Variant="Variant.Filled" @onclick="Cadastrar" Color="Color.Primary" Class="ml-auto">
                 Cadastrar
@@ -28,10 +37,12 @@
 @code {
     private MudTextField<string>? nome;
     private MudTextField<string>? biografia;
+    private string? fileImage;
+    private string? fotoPerfil;
 
     private async Task Cadastrar()
     {
-        var request = new ArtistaRequest(nome?.Value!, biografia?.Value!);
+        var request = new ArtistaRequest(nome?.Value!, biografia?.Value!, fotoPerfil);
         await artistaAPI.AddArtistaAsync(request);
         Voltar();
     }
@@ -39,6 +50,21 @@
     private void Voltar()
     {
         navigationManager.NavigateTo("/Artistas");
+    }
+
+    private async Task UploadFile(IBrowserFile file)
+    {
+        long maxFileSize = 1024 * 1024 * 15;
+        var format = "image/jpeg";
+        var resizedImage = await file.RequestImageFileAsync(format, 200, 200);
+
+        using var fileStream = resizedImage.OpenReadStream();
+        using var memoryStream = new MemoryStream();
+        await fileStream.CopyToAsync(memoryStream);
+
+        fotoPerfil = Convert.ToBase64String(memoryStream.ToArray());
+        fileImage = $"data:{format};base64,{fotoPerfil}";
+
     }
 
 }

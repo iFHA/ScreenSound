@@ -1,5 +1,5 @@
 ﻿<MudCard>
-    <MudCardMedia Image="images/cardArtista.png" Height="200" />
+    <MudCardMedia Image=@Imagem Height="200" />
     <MudCardHeader>
         <CardHeaderContent>
             <MudText Typo="Typo.h6">@Artista!.Nome</MudText>
@@ -17,4 +17,24 @@
 @code {
     [Parameter]
     public ArtistaResponse? Artista { get; set; }
+    public string? Imagem { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Imagem = "images/cardArtista.png";
+        if (Artista != null
+        && Artista.FotoPerfil != null
+        && Artista.FotoPerfil.Length > 0
+        )
+        {
+            if (Artista.FotoPerfil.Contains("FotosPerfil"))
+            {
+                Imagem = $"http://localhost:5160/{Artista.FotoPerfil}";
+            }
+            else
+            {
+                Imagem = Artista.FotoPerfil;
+            }
+        }
+    }
 }

@@ -53,7 +53,7 @@
     }
     private async Task Atualizar()
     {
-        var request = new ArtistaRequestEdit(Artista!.Id, nome?.Value!, biografia?.Value!);
+        var request = new ArtistaRequestEdit(Artista!.Id, nome?.Value!, biografia?.Value!, "");
         await artistaAPI.UpdateArtistaAsync(request);
         Voltar();
     }

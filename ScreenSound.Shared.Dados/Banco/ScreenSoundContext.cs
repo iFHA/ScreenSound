@@ -9,9 +9,15 @@ namespace ScreenSound.Banco
         public DbSet<Artista> Artistas { get; set; }
         public DbSet<Musica> Musicas { get; set; }
         public DbSet<Genero> Generos { get; set; }
-        private string ConnectionString = "Data Source=localhost;Initial Catalog=ScreenSound;User ID=sa;Password=Dbzbt333@;TrustServerCertificate=True";
+        private string ConnectionString = "Data Source=localhost;Initial Catalog=ScreenSound;User ID=sa;Password={sua_senha};TrustServerCertificate=True";
+        public ScreenSoundContext(DbContextOptions options) : base(options)
+        { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            if (optionsBuilder.IsConfigured)
+            {
+                return;
+            }
             optionsBuilder
             .UseSqlServer(ConnectionString)
             .UseLazyLoadingProxies();

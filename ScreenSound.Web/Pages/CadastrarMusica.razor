@@ -1,6 +1,8 @@
 ﻿@page "/CadastrarMusica"
 @inject ArtistaAPI artistasAPI
 @inject GeneroAPI generoAPI
+@inject MusicaAPI musicaAPI
+@inject NavigationManager navigationManager
 
 <MudPaper Class="px-8 pt-2 pb-4 mx-12 my-8" Justify="Justify.Center">
 
@@ -10,7 +12,7 @@
 
         <MudTextField Class="mt-4" T="string" Placeholder="Nome da música/canção" @bind-Value="nome"
             Variant="Variant.Outlined" Required="true" RequiredError="Campo obrigatório." />
-        <MudSelect @bind-Value="artistaSelecionado" Class="mt-4" T="ArtistaResponse" Label="Artistas"
+        <MudSelect Required="true" @bind-Value="artistaSelecionado" Class="mt-4" T="ArtistaResponse" Label="Artistas"
             Variant="Variant.Outlined">
             @if (artistas is not null)
             {
@@ -62,8 +64,15 @@
         artistas = await artistasAPI.GetArtistasAsync();
         generos = await generoAPI.GetGenerosAsync();
     }
-    private void Cadastrar()
+    private async Task Cadastrar()
     {
-        Console.WriteLine("cadastrando");
+        List<GeneroRequest>? generosSelecionadosRequest = null;
+        if (generosSelecionados is not null)
+        {
+            generosSelecionadosRequest = generosSelecionados.Select(g => new GeneroRequest(g.Nome, g.Descricao)).ToList();
+        }
+        var musicaRequest = new MusicaRequest(nome!, artistaSelecionado!.Id, anoLancamento, generosSelecionadosRequest);
+        await musicaAPI.AddMusicaAsync(musicaRequest);
+        navigationManager.NavigateTo("/musicas");
     }
 }

@@ -1,5 +1,5 @@
 ﻿@page "/Login"
-@inject LoginAPI api
+@inject AuthAPI api
 @inject NavigationManager navigationManager
 
 <MudPaper Class="px-8 pt-2 pb-4 mx-16 my-8" Justify="Justify.Center">
@@ -25,8 +25,8 @@
 
     private async Task FazerLogin()
     {
-        bool loginRealizado = await api.LoginAsync(new LoginRequest(email!, senha!));
-        if (loginRealizado)
+        var loginResponse = await api.LoginAsync(new LoginRequest(email!, senha!));
+        if (loginResponse.Sucesso)
         {
             navigationManager.NavigateTo("/artistas");
         }

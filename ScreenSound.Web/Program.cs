@@ -13,22 +13,18 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 // builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+builder.Services.AddScoped<CookieHandler>();
 
-// Cria uma única instância de HttpClient e a reutiliza
-builder.Services.AddSingleton(sp =>
+builder.Services.AddHttpClient("API", client =>
 {
-    var httpClient = new HttpClient
-    {
-        BaseAddress = new Uri(builder.Configuration["APIServer:Url"]!)
-    };
-    httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-    return httpClient;
-});
+    client.BaseAddress = new Uri(builder.Configuration["APIServer:Url"]!);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+}).AddHttpMessageHandler<CookieHandler>();
 
 builder.Services.AddScoped<ArtistaAPI>();
 builder.Services.AddScoped<GeneroAPI>();
 builder.Services.AddScoped<MusicaAPI>();
-builder.Services.AddScoped<LoginAPI>();
+builder.Services.AddScoped<AuthAPI>();
 
 builder.Services.AddMudServices();
 

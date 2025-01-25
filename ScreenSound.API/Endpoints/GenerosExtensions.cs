@@ -12,12 +12,14 @@ public static class GenerosExtensions
 {
     public static void AddEndpointsGeneros(this WebApplication app)
     {
-        app.MapGet("/Generos", (DAL<Genero> dal) =>
+        var groupBuilder = app.MapGroup("generos").RequireAuthorization();
+
+        groupBuilder.MapGet("", (DAL<Genero> dal) =>
         {
             return Results.Ok(dal.Listar());
         });
 
-        app.MapGet("/Generos/PorNome/{Nome}", (string Nome, DAL<Genero> dal) =>
+        groupBuilder.MapGet("PorNome/{Nome}", (string Nome, DAL<Genero> dal) =>
         {
             var result = dal.RecuperarPor(genero => genero.Nome.ToLower().Contains(Nome.ToLower()));
             if (result is null)
@@ -29,7 +31,7 @@ public static class GenerosExtensions
 
         });
 
-        app.MapGet("/Generos/{Id}", (int Id, DAL<Genero> dal) =>
+        groupBuilder.MapGet("{Id}", (int Id, DAL<Genero> dal) =>
         {
             var result = dal.RecuperarPor(genero => genero.Id.Equals(Id));
             if (result is null)
@@ -41,7 +43,7 @@ public static class GenerosExtensions
 
         });
 
-        app.MapPost("/Generos", ([FromBody] GeneroRequest generoRequest, DAL<Genero> dal) =>
+        groupBuilder.MapPost("", ([FromBody] GeneroRequest generoRequest, DAL<Genero> dal) =>
         {
             var genero = new Genero()
             {
@@ -52,7 +54,7 @@ public static class GenerosExtensions
             return Results.Created();
         });
 
-        app.MapPut("/Generos/{Id}", (int Id, [FromBody] Genero genero, DAL<Genero> dal) =>
+        groupBuilder.MapPut("{Id}", (int Id, [FromBody] Genero genero, DAL<Genero> dal) =>
         {
             var generoDb = dal.RecuperarPor(genero => genero.Id.Equals(Id));
             if (generoDb is null)
@@ -64,7 +66,7 @@ public static class GenerosExtensions
             return Results.Ok(genero);
         });
 
-        app.MapDelete("/Generos/{Id}", (int Id, DAL<Genero> dal) =>
+        groupBuilder.MapDelete("{Id}", (int Id, DAL<Genero> dal) =>
         {
             var genero = dal.RecuperarPor(genero => genero.Id.Equals(Id));
             if (genero is null)

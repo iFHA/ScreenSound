@@ -12,12 +12,14 @@ public static class MusicasExtensions
 {
     public static void AddEndpointsMusicas(this WebApplication app)
     {
-        app.MapGet("/Musicas", (DAL<Musica> dal) =>
+        var groupBuilder = app.MapGroup("musicas").RequireAuthorization();
+
+        groupBuilder.MapGet("", (DAL<Musica> dal) =>
         {
             return Results.Ok(dal.Listar());
         });
 
-        app.MapGet("/Musicas/{Id}", (int Id, DAL<Musica> dal) =>
+        groupBuilder.MapGet("{Id}", (int Id, DAL<Musica> dal) =>
         {
             var result = dal.RecuperarPor(musica => musica.Id.Equals(Id));
             if (result is null)
@@ -29,7 +31,7 @@ public static class MusicasExtensions
 
         });
 
-        app.MapGet("/Musicas/PorNome/{Nome}", (string Nome, DAL<Musica> dal) =>
+        groupBuilder.MapGet("PorNome/{Nome}", (string Nome, DAL<Musica> dal) =>
         {
             var result = dal.RecuperarPor(musica => musica.Nome.Equals(Nome));
             if (result is null)
@@ -41,7 +43,7 @@ public static class MusicasExtensions
 
         });
 
-        app.MapPost("/Musicas", ([FromBody] MusicaRequest musicaRequest, DAL<Musica> dal, DAL<Genero> dalGenero) =>
+        groupBuilder.MapPost("", ([FromBody] MusicaRequest musicaRequest, DAL<Musica> dal, DAL<Genero> dalGenero) =>
         {
             var musica = new Musica(musicaRequest.Nome)
             {
@@ -55,7 +57,7 @@ public static class MusicasExtensions
             return Results.Created();
         });
 
-        app.MapPut("/Musicas/{Id}", (int Id, [FromBody] Musica musica, DAL<Musica> dal) =>
+        groupBuilder.MapPut("{Id}", (int Id, [FromBody] Musica musica, DAL<Musica> dal) =>
         {
             var musicaDb = dal.RecuperarPor(musica => musica.Id.Equals(Id));
             if (musicaDb is null)
@@ -67,7 +69,7 @@ public static class MusicasExtensions
             return Results.Ok(musica);
         });
 
-        app.MapDelete("/Musicas/{Id}", (int Id, DAL<Musica> dal) =>
+        groupBuilder.MapDelete("{Id}", (int Id, DAL<Musica> dal) =>
         {
             var musica = dal.RecuperarPor(musica => musica.Id.Equals(Id));
             if (musica is null)

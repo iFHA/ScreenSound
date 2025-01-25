@@ -13,14 +13,20 @@ public static class ArtistasExtensions
 {
     public static void AddEndpointsArtistas(this WebApplication app)
     {
-        app.MapGet("/Artistas", (DAL<Artista> dal) =>
+        // para não ter que concatenar no fim de cada endpoint a chamada ao metodo
+        // .RequiredAuthorization, cria-se um grupo
+        var groupBuilder = app.MapGroup("artistas")
+        .RequireAuthorization()
+        .WithTags("Artistas");
+
+        groupBuilder.MapGet("", (DAL<Artista> dal) =>
         {
             var artistas = dal.Listar();
             var artistasResponse = artistas.Select(artista => new ArtistaResponse(artista.Id, artista.Nome, artista.Bio, artista.FotoPerfil));
             return Results.Ok(artistasResponse);
         });
 
-        app.MapGet("/Artistas/{nome}", (string nome, DAL<Artista> dal) =>
+        groupBuilder.MapGet("{nome}", (string nome, DAL<Artista> dal) =>
         {
             var result = dal.RecuperarPor(artista => artista.Nome.ToLower().Contains(nome.ToLower()));
             if (result is null)
@@ -32,7 +38,7 @@ public static class ArtistasExtensions
 
         });
 
-        app.MapPost("/Artistas", async ([FromServices] IHostEnvironment env, [FromBody] ArtistaRequest artistaRequest, DAL<Artista> dal) =>
+        groupBuilder.MapPost("", async ([FromServices] IHostEnvironment env, [FromBody] ArtistaRequest artistaRequest, DAL<Artista> dal) =>
         {
             var imagemArtista = "";
             if (artistaRequest.fotoPerfil is not null)
@@ -52,7 +58,7 @@ public static class ArtistasExtensions
             return Results.Created();
         });
 
-        app.MapPut("/Artistas", ([FromBody] Artista artista, DAL<Artista> dal) =>
+        groupBuilder.MapPut("", ([FromBody] Artista artista, DAL<Artista> dal) =>
         {
             if (artista is null)
             {
@@ -62,7 +68,7 @@ public static class ArtistasExtensions
             return Results.Ok(artista);
         });
 
-        app.MapDelete("/Artistas/{Id:int}", (int Id, DAL<Artista> dal) =>
+        groupBuilder.MapDelete("{Id:int}", (int Id, DAL<Artista> dal) =>
         {
             var artista = dal.RecuperarPor(artista => artista.Id.Equals(Id));
             if (artista is null)

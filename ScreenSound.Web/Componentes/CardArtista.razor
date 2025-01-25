@@ -1,4 +1,5 @@
-﻿<MudCard>
+﻿@inject IConfiguration Config
+<MudCard>
     <MudCardMedia Image=@GetImagem() Height="200" />
     <MudCardHeader>
         <CardHeaderContent>
@@ -27,7 +28,7 @@
         {
             if (Artista.FotoPerfil.Contains("FotosPerfil"))
             {
-                img = $"http://localhost:5160/{Artista.FotoPerfil}";
+                img = $"{Config["APIServer:Url"]}/{Artista.FotoPerfil}";
             }
             else
             {

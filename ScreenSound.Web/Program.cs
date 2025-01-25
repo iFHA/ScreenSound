@@ -5,6 +5,9 @@ using ScreenSound.Web.Services;
 using MudBlazor.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 

@@ -7,9 +7,9 @@ public class GeneroAPI
 {
     private readonly HttpClient _httpClient;
 
-    public GeneroAPI(IHttpClientFactory factory)
+    public GeneroAPI(HttpClient httpClient)
     {
-        _httpClient = factory.CreateClient("API");
+        _httpClient = httpClient;
     }
 
     public async Task<List<GeneroResponse>?> GetGenerosAsync()

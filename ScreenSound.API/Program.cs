@@ -7,6 +7,13 @@ using ScreenSound.Banco;
 using ScreenSound.Modelos;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.ConfigureAppConfiguration(config =>
+{
+    var settings = config.Build();
+    config.AddAzureAppConfiguration("Endpoint=https://screensound0-configuration.azconfig.io;Id=/mBx;Secret=4wnhT62bdNZj9CC4lkAXe2QUoEsRgnnUdXiTpJN2ciQRE68n5ixNJQQJ99BAACZoyfij5AKWAAACAZACo3K0");
+});
+
 builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddDbContext<ScreenSoundContext>((options) =>

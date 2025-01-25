@@ -24,6 +24,8 @@ namespace ScreenSound.Banco
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Musica>()
             .HasMany(musica => musica.Generos)
             .WithMany(genero => genero.Musicas);

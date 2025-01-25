@@ -29,15 +29,15 @@ builder.Services.AddTransient<DAL<Genero>>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("cors-policy",
-        builder =>
-        {
-            builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()
-                .SetIsOriginAllowedToAllowWildcardSubdomains();
-        });
-});
+builder.Services.AddCors(
+    options => options.AddPolicy(
+        "wasm",
+        policy => policy.WithOrigins([builder.Configuration["BackendUrl"] ?? "http://localhost:5160",
+            builder.Configuration["FrontendUrl"] ?? "http://localhost:5057"])
+            .AllowAnyMethod()
+            .SetIsOriginAllowed(pol => true)
+            .AllowAnyHeader()
+            .AllowCredentials()));
 
 var app = builder.Build();
 
@@ -47,7 +47,7 @@ app.AddEndpointsGeneros();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseCors("cors-policy");
+app.UseCors("wasm");
 app.UseStaticFiles();
 
 app.Run();

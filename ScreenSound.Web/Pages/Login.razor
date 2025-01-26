@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @inject AuthAPI api
 @inject NavigationManager navigationManager
+@attribute [AllowAnonymous]
 
 <AuthorizeView>
     <Authorized>

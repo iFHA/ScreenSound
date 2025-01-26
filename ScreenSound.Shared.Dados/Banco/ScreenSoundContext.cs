@@ -10,6 +10,7 @@ namespace ScreenSound.Banco
         public DbSet<Artista> Artistas { get; set; }
         public DbSet<Musica> Musicas { get; set; }
         public DbSet<Genero> Generos { get; set; }
+        public DbSet<AvaliacaoArtista> AvaliacaoArtistas { get; set; }
         private string ConnectionString = "Data Source=localhost;Initial Catalog=ScreenSound;User ID=sa;Password={sua_senha};TrustServerCertificate=True";
         public ScreenSoundContext()
         { }
@@ -32,6 +33,9 @@ namespace ScreenSound.Banco
             modelBuilder.Entity<Musica>()
             .HasMany(musica => musica.Generos)
             .WithMany(genero => genero.Musicas);
+
+            modelBuilder.Entity<AvaliacaoArtista>()
+            .HasKey(artista => new { artista.ArtistaId, artista.PessoaId });
         }
     }
 }

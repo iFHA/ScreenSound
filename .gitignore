@@ -367,3 +367,5 @@ FodyWeavers.xsd
 /ScreenSound.API/wwwroot
 /ScreenSound.API/appsettings.json
 /ScreenSound.API/appsettings.Development.json
+
+.idea

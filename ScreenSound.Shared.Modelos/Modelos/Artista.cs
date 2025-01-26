@@ -7,6 +7,7 @@ public class Artista
     public string Bio { get; set; }
     public string FotoPerfil { get; set; }
     public virtual ICollection<Musica> Musicas { get; set; } = new List<Musica>();
+    public virtual ICollection<AvaliacaoArtista> Avaliacoes { get; set; } = new List<AvaliacaoArtista>();
     public Artista() { Nome = ""; Bio = ""; FotoPerfil = ""; }
     public Artista(string nome, string bio)
     {
@@ -35,5 +36,11 @@ public class Artista
             Nome: {Nome}
             Foto de Perfil: {FotoPerfil}
             Bio: {Bio}";
+    }
+
+    public void AdicionarNota(int pessoaId, int nota)
+    {
+        nota = Math.Clamp(nota, 1, 5);
+        Avaliacoes.Add(new AvaliacaoArtista() { ArtistaId = this.Id, PessoaId = pessoaId, Nota = nota });
     }
 }

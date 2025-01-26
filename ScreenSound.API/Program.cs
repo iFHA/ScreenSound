@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ScreenSound.API.Endpoints;
@@ -60,7 +61,14 @@ app.AddEndpointsGeneros();
 
 app.MapGroup("auth")
 .MapIdentityApi<PessoaComAcesso>()
-.WithTags("Autorizacao");
+.WithTags("Autorização");
+
+app.MapPost("auth/logout", async ([FromServices] SignInManager<PessoaComAcesso> signInManager) =>
+{
+    await signInManager.SignOutAsync();
+    return Results.Ok();
+}).RequireAuthorization()
+.WithTags("Autorização");
 
 app.UseSwagger();
 app.UseSwaggerUI();

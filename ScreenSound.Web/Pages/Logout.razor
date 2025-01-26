@@ -1,0 +1,15 @@
+﻿@page "/logout"
+@inject AuthAPI AuthAPI
+<h3>Logout Realizado</h3>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        bool isAuthenticated = await AuthAPI.VerificaAutenticado();
+        if (isAuthenticated)
+        {
+            await AuthAPI.LogoutAsync();
+        }
+        await base.OnInitializedAsync();
+    }
+}

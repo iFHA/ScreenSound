@@ -3,6 +3,8 @@
 @code {
     protected override void OnInitialized()
     {
-        navigationManager.NavigateTo("/login");
+        string targetUrl = navigationManager.Uri.ToLower().Contains("logout") ? "/login" :
+        $"/login?ReturnUrl={Uri.EscapeDataString(navigationManager.Uri)}";
+        navigationManager.NavigateTo(targetUrl);
     }
 }

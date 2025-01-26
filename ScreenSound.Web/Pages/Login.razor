@@ -29,13 +29,16 @@
 @code {
     private string? email;
     private string? senha;
+    [SupplyParameterFromQuery]
+    public string? ReturnUrl { get; set; }
 
     private async Task FazerLogin()
     {
         var loginResponse = await api.LoginAsync(new LoginRequest(email!, senha!));
         if (loginResponse.Sucesso)
         {
-            navigationManager.NavigateTo("/artistas");
+            string targetUrl = ReturnUrl is not null ? ReturnUrl : "/artistas";
+            navigationManager.NavigateTo(targetUrl);
         }
     }
 }

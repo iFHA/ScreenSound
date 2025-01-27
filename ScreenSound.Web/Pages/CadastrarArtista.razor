@@ -17,15 +17,15 @@
             @ref="biografia" Lines="4" Required="true" RequiredError="Campo obrigatório." />
 
         <MudImage Width="200" Class="my-4" src="@fileImage" />
-        <MudFileUpload T="IBrowserFile" Accept=".jpeg" FilesChanged="UploadFile">
-            <ActivatorContent>
-                <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary"
-                    StartIcon="@Icons.Material.Filled.PhotoCamera">
-                    Foto de Perfil
-                </MudButton>
-            </ActivatorContent>
-        </MudFileUpload>
         <div class="d-flex align-center justify-space-between mt-4">
+            <MudFileUpload T="IBrowserFile" Accept=".jpeg" FilesChanged="UploadFile">
+                <ActivatorContent>
+                    <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary"
+                        StartIcon="@Icons.Material.Filled.PhotoCamera">
+                        Foto de Perfil
+                    </MudButton>
+                </ActivatorContent>
+            </MudFileUpload>
             <MudButton Variant="Variant.Filled" @onclick="Cadastrar" Color="Color.Primary" Class="ml-auto">
                 Cadastrar
             </MudButton>

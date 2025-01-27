@@ -133,13 +133,13 @@ public static class ArtistasExtensions
             ?? throw new InvalidOperationException("Pessoa não está conectada!");
 
             var avaliacao = artista.Avaliacoes.FirstOrDefault(a => a.PessoaId.Equals(pessoa.Id));
-
-            if (avaliacao is null)
+            double nota = 0;
+            if (avaliacao is not null)
             {
-                return Results.NotFound();
+                nota = avaliacao.Nota;
             }
 
-            return Results.Ok(new AvaliacaoArtistaResponse(avaliacao.Nota));
+            return Results.Ok(new AvaliacaoArtistaResponse(nota));
         });
 
 

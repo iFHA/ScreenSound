@@ -13,6 +13,7 @@
         <MudButton Color="Color.Warning" Variant="Variant.Outlined" Href=@($"/EditarArtista/{Artista?.Nome}")>Detalhes
         </MudButton>
     </MudCardActions>
+    <MudRating ReadOnly="true" SelectedValue="@Convert.ToInt32(Artista!.Classificacao)"/>
 </MudCard>
 
 @code {

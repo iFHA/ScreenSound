@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ScreenSound.API.Requests;
+using ScreenSound.API.Response;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
 
@@ -16,7 +17,10 @@ public static class MusicasExtensions
 
         groupBuilder.MapGet("", (DAL<Musica> dal) =>
         {
-            return Results.Ok(dal.Listar());
+            return Results.Ok(dal.Listar().Select(musica =>
+                new MusicaResponse(musica.Id, musica.Nome, musica.ArtistaId ?? 0, musica?.Artista?.Nome ?? "",
+                    musica?.AnoLancamento)
+            ));
         });
 
         groupBuilder.MapGet("{Id}", (int Id, DAL<Musica> dal) =>
@@ -26,8 +30,7 @@ public static class MusicasExtensions
             {
                 return Results.NotFound();
             }
-
-            return Results.Ok(result);
+            return Results.Ok(new MusicaResponse(result.Id, result.Nome, result.ArtistaId ?? 0, result?.Artista?.Nome ?? "", result?.AnoLancamento));
 
         });
 

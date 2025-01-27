@@ -24,7 +24,14 @@ public static class ArtistasExtensions
         groupBuilder.MapGet("", (DAL<Artista> dal) =>
         {
             var artistas = dal.Listar();
-            var artistasResponse = artistas.Select(artista => new ArtistaResponse(artista.Id, artista.Nome, artista.Bio, artista.FotoPerfil));
+            var artistasResponse = artistas.Select(artista => new ArtistaResponse(artista.Id, artista.Nome, artista.Bio, artista.FotoPerfil)
+            {
+                Classificacao = artista.Avaliacoes.Count > 0 
+                    ? artista.Avaliacoes
+                            .Select(c=> Convert.ToDouble(c.Nota))
+                            .Average()
+                    : 0.0
+            });
             return Results.Ok(artistasResponse);
         });
 

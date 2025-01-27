@@ -28,7 +28,7 @@ public static class ArtistasExtensions
             {
                 Classificacao = artista.Avaliacoes.Count > 0 
                     ? artista.Avaliacoes
-                            .Select(c=> Convert.ToDouble(c.Nota))
+                            .Select(c=> c.Nota)
                             .Average()
                     : 0.0
             });

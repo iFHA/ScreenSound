@@ -1,5 +1,3 @@
-using System;
-
-namespace ScreenSound.API.Response;
+namespace ScreenSound.Web.Response;
 
 public record AvaliacaoArtistaResponse(double Nota);

@@ -38,7 +38,7 @@ public class Artista
             Bio: {Bio}";
     }
 
-    public void AdicionarNota(int pessoaId, int nota)
+    public void AdicionarNota(int pessoaId, double nota)
     {
         nota = Math.Clamp(nota, 1, 5);
         Avaliacoes.Add(new AvaliacaoArtista() { ArtistaId = this.Id, PessoaId = pessoaId, Nota = nota });
